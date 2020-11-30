@@ -1,0 +1,4 @@
+rootProject.name = 'LearningSpringBoot2'
+
+include 'web-service'
+include 'account-service'
