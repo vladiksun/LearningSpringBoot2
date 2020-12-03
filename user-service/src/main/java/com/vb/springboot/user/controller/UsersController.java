@@ -19,7 +19,7 @@ public class UsersController {
 
     private final UsersService usersService;
 
-    private Environment environment;
+    private final Environment environment;
 
     @Autowired
     public UsersController(final UsersService usersService, final Environment environment) {
