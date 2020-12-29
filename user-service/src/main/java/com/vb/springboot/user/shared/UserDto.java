@@ -1,21 +1,23 @@
-package com.vb.springboot.user.model.request;
+package com.vb.springboot.user.shared;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
 
-public class UserDetailsRequestModel {
+import java.io.Serializable;
 
-    @NotNull
+public class UserDto implements Serializable {
+
+    private static final long serialVersionUID = -8452662598509341123L;
+
     private String firstName;
 
-    @NotNull
     private String lastName;
 
-    @Email
     private String email;
 
-    @NotNull
     private String password;
+
+    private String userId;
+
+    private String encryptedPassword;
 
     public String getFirstName() {
         return firstName;
@@ -48,4 +50,21 @@ public class UserDetailsRequestModel {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getEncryptedPassword() {
+        return encryptedPassword;
+    }
+
+    public void setEncryptedPassword(String encryptedPassword) {
+        this.encryptedPassword = encryptedPassword;
+    }
+
 }

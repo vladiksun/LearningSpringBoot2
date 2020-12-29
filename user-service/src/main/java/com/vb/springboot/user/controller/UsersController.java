@@ -1,9 +1,11 @@
 package com.vb.springboot.user.controller;
 
+import com.vb.springboot.user.shared.UserDto;
 import com.vb.springboot.user.model.request.UpdateUserDetailsRequestModel;
-import com.vb.springboot.user.model.request.UserDetailsRequestModel;
+import com.vb.springboot.user.model.request.CreateUserRequestModel;
 import com.vb.springboot.user.model.response.UserRestResponse;
 import com.vb.springboot.user.service.UsersService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -21,10 +23,16 @@ public class UsersController {
 
     private final Environment environment;
 
+    private final ModelMapper modelMapper;
+
+
     @Autowired
-    public UsersController(final UsersService usersService, final Environment environment) {
+    public UsersController(final UsersService usersService,
+                           final Environment environment,
+                           final ModelMapper modelMapper) {
         this.usersService = usersService;
         this.environment = environment;
+        this.modelMapper = modelMapper;
     }
 
     public String getUsers(@RequestParam(value = "page", defaultValue = "1") int page,
@@ -46,10 +54,13 @@ public class UsersController {
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<UserRestResponse> createUser(@Valid @RequestBody UserDetailsRequestModel user) {
-        UserRestResponse userRestResponse = usersService.createUser(user);
-        return new ResponseEntity<>(userRestResponse, HttpStatus.OK);
+                 produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
+    public ResponseEntity<UserRestResponse> createUser(@Valid @RequestBody CreateUserRequestModel user) {
+        UserDto userDto = modelMapper.map(user, UserDto.class);
+
+        UserDto savedUser = usersService.createUser(userDto);
+
+        return new ResponseEntity<>(modelMapper.map(savedUser, UserRestResponse.class), HttpStatus.OK);
     }
 
     @PutMapping(path = {"/{userId}"},
