@@ -2,8 +2,8 @@ package com.vb.springboot.user.controller;
 
 import com.vb.springboot.user.shared.UserDto;
 import com.vb.springboot.user.model.request.UpdateUserDetailsRequestModel;
-import com.vb.springboot.user.model.request.CreateUserRequestModel;
-import com.vb.springboot.user.model.response.UserRestResponse;
+import com.vb.springboot.user.model.request.CreateUserRequest;
+import com.vb.springboot.user.model.response.CreateUserResponse;
 import com.vb.springboot.user.service.UsersService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,33 +43,33 @@ public class UsersController {
 
     @GetMapping(path = {"/{userId}"},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<UserRestResponse> getUser(@PathVariable String userId) {
-        UserRestResponse userRestResponse = usersService.getUser(userId);
+    public ResponseEntity<CreateUserResponse> getUser(@PathVariable String userId) {
+        UserDto user = usersService.getUser(userId);
 
-        if (userRestResponse == null) {
+        if (user == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        return new ResponseEntity<>(userRestResponse, HttpStatus.OK);
+        return new ResponseEntity<>(modelMapper.map(user, CreateUserResponse.class), HttpStatus.OK);
     }
 
     @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
                  produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<UserRestResponse> createUser(@Valid @RequestBody CreateUserRequestModel user) {
+    public ResponseEntity<CreateUserResponse> createUser(@Valid @RequestBody CreateUserRequest user) {
         UserDto userDto = modelMapper.map(user, UserDto.class);
 
         UserDto savedUser = usersService.createUser(userDto);
 
-        return new ResponseEntity<>(modelMapper.map(savedUser, UserRestResponse.class), HttpStatus.OK);
+        return new ResponseEntity<>(modelMapper.map(savedUser, CreateUserResponse.class), HttpStatus.OK);
     }
 
     @PutMapping(path = {"/{userId}"},
             consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE},
             produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
-    public ResponseEntity<UserRestResponse> updateUser(@PathVariable String userId,
-                                                       @RequestBody UpdateUserDetailsRequestModel userToUpdate) {
-        UserRestResponse storedUser = usersService.updateUser(userId, userToUpdate);
-        return new ResponseEntity<>(storedUser, HttpStatus.OK);
+    public ResponseEntity<CreateUserResponse> updateUser(@PathVariable String userId,
+                                                         @RequestBody UpdateUserDetailsRequestModel userToUpdate) {
+        UserDto updatedUser = usersService.updateUser(userId, userToUpdate);
+        return new ResponseEntity<>(modelMapper.map(updatedUser, CreateUserResponse.class), HttpStatus.CREATED);
     }
 
     @DeleteMapping(path = {"/{userId}"})

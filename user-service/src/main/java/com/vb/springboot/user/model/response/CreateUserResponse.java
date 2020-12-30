@@ -1,6 +1,6 @@
 package com.vb.springboot.user.model.response;
 
-public class UserRestResponse {
+public class CreateUserResponse {
 
     private String userId;
 
@@ -9,8 +9,6 @@ public class UserRestResponse {
     private String lastName;
 
     private String email;
-
-    private String password;
 
     public String getUserId() {
         return userId;
@@ -42,13 +40,5 @@ public class UserRestResponse {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }

@@ -3,7 +3,7 @@ package com.vb.springboot.user.service.impl;
 import com.vb.springboot.user.data.UserEntity;
 import com.vb.springboot.user.data.UsersRepository;
 import com.vb.springboot.user.model.request.UpdateUserDetailsRequestModel;
-import com.vb.springboot.user.model.response.UserRestResponse;
+import com.vb.springboot.user.model.response.CreateUserResponse;
 import com.vb.springboot.user.service.UsersService;
 import com.vb.springboot.user.shared.UserDto;
 import com.vb.springboot.user.utils.Utils;
@@ -40,14 +40,14 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public UserRestResponse getUser(String userId) {
+    public UserDto getUser(String userId) {
         //return users.getOrDefault(userId, null);
 
         return null;
     }
 
     @Override
-    public UserRestResponse updateUser(String userId, UpdateUserDetailsRequestModel userToUpdate) {
+    public UserDto updateUser(String userId, UpdateUserDetailsRequestModel userToUpdate) {
 //        UserRestResponse storedUser = users.get(userId);
 //        storedUser.setFirstName(userToUpdate.getFirstName());
 //        storedUser.setLastName(userToUpdate.getLastName());

@@ -16,7 +16,7 @@ allprojects {
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'java'
 
-    repositories {
+    repositories {JavaVersion
         mavenCentral()
         jcenter()
     }
@@ -24,8 +24,8 @@ allprojects {
     group = 'com.vb.springboot'
     version = '0.0.1-SNAPSHOT'
 
-    sourceCompatibility = 1.8
-    targetCompatibility = 1.8
+    sourceCompatibility = 11
+    targetCompatibility = 11
 
     test {
         useJUnitPlatform()
