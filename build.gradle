@@ -9,14 +9,16 @@ plugins {
     id 'org.springframework.boot' version "${springBoot}"
     id 'io.spring.dependency-management' version "${dependencyManagement}"
     id 'java'
+    id 'org.jetbrains.kotlin.jvm' version "${kotlinVersion}"
 }
 
 allprojects {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'java'
+    apply plugin: 'kotlin'
 
-    repositories {JavaVersion
+    repositories {
         mavenCentral()
         jcenter()
     }
@@ -24,8 +26,26 @@ allprojects {
     group = 'com.vb.springboot'
     version = '0.0.1-SNAPSHOT'
 
-    sourceCompatibility = 11
-    targetCompatibility = 11
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+
+    sourceSets {
+        main.kotlin.srcDirs += 'src/main/kotlin'
+        main.java.srcDirs += 'src/main/java'
+    }
+
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "11"
+            freeCompilerArgs = ["-Xjsr305=strict"]
+        }
+    }
+    compileTestKotlin {
+        kotlinOptions {
+            jvmTarget = "11"
+            freeCompilerArgs = ["-Xjsr305=strict"]
+        }
+    }
 
     test {
         useJUnitPlatform()

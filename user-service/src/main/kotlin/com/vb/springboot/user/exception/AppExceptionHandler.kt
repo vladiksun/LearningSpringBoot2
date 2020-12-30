@@ -1,45 +1,50 @@
-package com.vb.springboot.user.exception;
+package com.vb.springboot.user.exception
 
-import com.vb.springboot.user.model.response.ErrorMessage;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-
-import java.util.Date;
+import com.vb.springboot.user.model.response.ErrorMessage
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.MethodArgumentNotValidException
+import org.springframework.web.bind.annotation.ControllerAdvice
+import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.context.request.WebRequest
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler
+import java.util.*
 
 @ControllerAdvice
-public class AppExceptionHandler extends ResponseEntityExceptionHandler {
+class AppExceptionHandler : ResponseEntityExceptionHandler() {
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorMessage> handleGenericException(Exception ex, WebRequest request) {
-        ErrorMessage errorMessage = createErrorMessage(ex);
-
-        return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+    @ExceptionHandler(Exception::class)
+    fun handleGenericException(ex: Exception, request: WebRequest?): ResponseEntity<ErrorMessage> {
+        val errorMessage = createErrorMessage(ex)
+        return ResponseEntity(errorMessage, HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR)
     }
 
-    @ExceptionHandler({UserServiceException.class, NullPointerException.class})
-    public ResponseEntity<ErrorMessage> handleUserServiceException(Exception ex, WebRequest request) {
-        ErrorMessage errorMessage = createErrorMessage(ex);
 
-        return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+    @ExceptionHandler(UserServiceException::class, NullPointerException::class)
+    fun handleUserServiceException(ex: Exception, request: WebRequest?): ResponseEntity<ErrorMessage> {
+        val errorMessage = createErrorMessage(ex)
+        return ResponseEntity(errorMessage, HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR)
     }
 
-    private ErrorMessage createErrorMessage(Exception ex) {
-        ErrorMessage errorMessage = new ErrorMessage();
-        errorMessage.setTimeStamp(new Date());
+    override fun handleMethodArgumentNotValid(ex: MethodArgumentNotValidException,
+                                              headers: HttpHeaders,
+                                              status: HttpStatus,
+                                              request: WebRequest): ResponseEntity<Any> {
 
-        String message = ex.getLocalizedMessage();
+        val errorMessage = createErrorMessage(ex)
+        return ResponseEntity(errorMessage, HttpHeaders(), HttpStatus.BAD_REQUEST)
+    }
 
+    private fun createErrorMessage(ex: Exception): ErrorMessage {
+        val errorMessage = ErrorMessage()
+        errorMessage.timeStamp = Date()
+        var message = ex.localizedMessage
         if (message == null) {
-            message = ex.toString();
+            message = ex.toString()
         }
-
-        errorMessage.setMessage(message);
-        errorMessage.setDeveloperMessage("Internal Server Error. Please contact your administrator.");
-        return errorMessage;
+        errorMessage.message = message
+        errorMessage.developerMessage = "Internal Server Error. Please contact your administrator."
+        return errorMessage
     }
 }

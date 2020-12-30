@@ -1,10 +1,9 @@
-package com.vb.springboot.user.exception;
+package com.vb.springboot.user.exception
 
-public class UserServiceException extends RuntimeException {
+import java.lang.RuntimeException
 
-    private static final long serialVersionUID = 3300122125227502449L;
-
-    public UserServiceException(String message) {
-        super(message);
+class UserServiceException(message: String?) : RuntimeException(message) {
+    companion object {
+        private const val serialVersionUID = 3300122125227502449L
     }
 }

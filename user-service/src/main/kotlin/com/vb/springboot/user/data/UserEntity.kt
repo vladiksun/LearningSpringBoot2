@@ -1,83 +1,31 @@
-package com.vb.springboot.user.data;
+package com.vb.springboot.user.data
 
-import javax.persistence.*;
-import java.io.Serializable;
+import java.io.Serializable
+import javax.persistence.*
 
 @Entity
 @Table(name = "users")
-public class UserEntity implements Serializable {
-
-    private static final long serialVersionUID = 5629489272409476609L;
-
+class UserEntity : Serializable {
     @Id
     @GeneratedValue
-    private long id;
+    var id: Long = 0
 
     @Column(nullable = false, length = 50)
-    private String firstName;
+    var firstName: String? = null
 
     @Column(nullable = false, length = 50)
-    private String lastName;
+    var lastName: String? = null
 
     @Column(nullable = false, length = 200, unique = true)
-    private String email;
+    var email: String? = null
 
     @Column(nullable = false, unique = true)
-    private String userId;
+    var userId: String? = null
 
     @Column(nullable = false)
-    private String encryptedPassword;
+    var encryptedPassword: String? = null
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
+    companion object {
+        const val serialVersionUID = 5629489272409476609L
     }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getEncryptedPassword() {
-        return encryptedPassword;
-    }
-
-    public void setEncryptedPassword(String encryptedPassword) {
-        this.encryptedPassword = encryptedPassword;
-    }
-
 }

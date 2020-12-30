@@ -1,66 +1,36 @@
-package com.vb.springboot.user.service.impl;
+package com.vb.springboot.user.service.impl
 
-import com.vb.springboot.user.data.UserEntity;
-import com.vb.springboot.user.data.UsersRepository;
-import com.vb.springboot.user.model.request.UpdateUserDetailsRequestModel;
-import com.vb.springboot.user.model.response.CreateUserResponse;
-import com.vb.springboot.user.service.UsersService;
-import com.vb.springboot.user.shared.UserDto;
-import com.vb.springboot.user.utils.Utils;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired
+import com.vb.springboot.user.data.UsersRepository
+import org.modelmapper.ModelMapper
+import com.vb.springboot.user.service.UsersService
+import com.vb.springboot.user.shared.UserDto
+import com.vb.springboot.user.data.UserEntity
+import com.vb.springboot.user.utils.Utils
+import org.springframework.stereotype.Service
 
 @Service
-public class UsersServiceImpl implements UsersService {
+class UsersServiceImpl @Autowired constructor(private val usersRepository: UsersRepository,
+                                              private val utils: Utils,
+                                              private val modelMapper: ModelMapper) : UsersService {
 
-    private final UsersRepository usersRepository;
-
-    private final Utils utils;
-
-    private final ModelMapper modelMapper;
-
-    @Autowired
-    public UsersServiceImpl(UsersRepository usersRepository, Utils utils, ModelMapper modelMapper) {
-        this.usersRepository = usersRepository;
-        this.utils = utils;
-        this.modelMapper = modelMapper;
+    override fun createUser(userDetails: UserDto): UserDto {
+        userDetails.userId = utils.generateUserId()
+        val userEntity = modelMapper.map(userDetails, UserEntity::class.java)
+        userEntity.encryptedPassword = "test"
+        usersRepository.save(userEntity)
+        return userDetails
     }
 
-    @Override
-    public UserDto createUser(UserDto userDetails) {
-        userDetails.setUserId(utils.generateUserId());
-
-        UserEntity userEntity = modelMapper.map(userDetails, UserEntity.class);
-        userEntity.setEncryptedPassword("test");
-
-        usersRepository.save(userEntity);
-
-        return userDetails;
+    override fun getUser(userId: String): UserDto? {
+        TODO()
     }
 
-    @Override
-    public UserDto getUser(String userId) {
-        //return users.getOrDefault(userId, null);
-
-        return null;
+    override fun updateUser(userId: String, userToUpdate: UserDto): UserDto? {
+        TODO()
     }
 
-    @Override
-    public UserDto updateUser(String userId, UpdateUserDetailsRequestModel userToUpdate) {
-//        UserRestResponse storedUser = users.get(userId);
-//        storedUser.setFirstName(userToUpdate.getFirstName());
-//        storedUser.setLastName(userToUpdate.getLastName());
-//
-//        users.put(userId, storedUser);
-//
-//        return storedUser;
-
-        return null;
-    }
-
-    @Override
-    public void deleteUser(String userId) {
-        //users.remove(userId);
+    override fun deleteUser(userId: String) {
+        TODO()
     }
 }

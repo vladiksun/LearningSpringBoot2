@@ -1,7 +1,5 @@
-package com.vb.springboot.user.data;
+package com.vb.springboot.user.data
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.CrudRepository
 
-public interface UsersRepository extends CrudRepository<UserEntity, Long> {
-
-}
+interface UsersRepository : CrudRepository<UserEntity?, Long?>

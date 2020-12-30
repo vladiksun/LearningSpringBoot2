@@ -1,18 +1,13 @@
-package com.vb.springboot.user.service;
+package com.vb.springboot.user.service
 
-import com.vb.springboot.user.shared.UserDto;
-import com.vb.springboot.user.model.request.UpdateUserDetailsRequestModel;
-import com.vb.springboot.user.model.response.CreateUserResponse;
+import com.vb.springboot.user.shared.UserDto
 
-public interface UsersService {
+interface UsersService {
+    fun createUser(userDetails: UserDto): UserDto
 
-    UserDto createUser(UserDto userDetails);
+    fun getUser(userId: String): UserDto?
 
-    UserDto getUser(String userId);
+    fun updateUser(userId: String, userToUpdate: UserDto): UserDto?
 
-    UserDto updateUser(String userId, UpdateUserDetailsRequestModel userToUpdate);
-
-    void deleteUser(String userId);
+    fun deleteUser(userId: String)
 }
-
-
